@@ -43,7 +43,10 @@
     background:url('assets/p1.jpg') center/cover no-repeat;
     filter:blur(26px) saturate(1.04) contrast(.98);transform:scale(1.10)}
   .ambient::after{content:"";position:absolute;inset:0;
-    background:radial-gradient(130% 100% at 50% 50%,rgba(255,255,255,.34) 0%,rgba(255,255,255,.26) 58%,rgba(255,255,255,.18) 100%)}
+    background:radial-gradient(130% 100% at 50% 50%,rgba(255,255,255,.34) 0%,rgba(255,255,255,.26) 58%,rgba(255,255,255,.18) 100%);
+    transition:background .9s ease}
+  /* 非首页：舞台外的延展也跟着压淡，和页面内的底图接得上 */
+  .ambient.dim::after{background:radial-gradient(130% 100% at 50% 50%,rgba(255,255,255,.56) 0%,rgba(255,255,255,.48) 58%,rgba(255,255,255,.40) 100%)}
   /* 在首页时舞台外也跟着换成首页底图，并压成雾白，和页面里的白雾接上 */
   .ambient.hero{background-image:url('assets/p1-hero.jpg');
     filter:blur(34px) saturate(1.02) brightness(1.04)}
@@ -55,7 +58,8 @@
     width:min(100vw,calc(100vh * 9 / 16));
     height:min(100vh,calc(100vw * 16 / 9));
     max-width:100%;max-height:100%;
-    background:transparent;
+    /* 白纸底衬：非首页时底图半透后透出的是这层白，不会露出别的颜色 */
+    background:rgba(255,255,255,.42);
     box-shadow:0 26px 80px rgba(8,20,4,.42);
     container-type:size;container-name:stage;
     cursor:pointer;user-select:none;-webkit-user-select:none;
@@ -64,7 +68,10 @@
   /* ============ 固定底图（所有页面共用 p1，切换时不动） ============ */
   .bg{position:absolute;inset:0;z-index:0;
     background:url('assets/p1.jpg') center/cover no-repeat;
-    filter:saturate(1.06) brightness(.99) contrast(1.10)}
+    filter:saturate(1.06) brightness(.99) contrast(1.10);
+    transition:opacity .9s ease}
+  /* 除第一页外，底图整体压淡一点（首页由 bg-hero 全强度盖住，不受影响） */
+  .bg.dim{opacity:.80}
   /* 第一页单独用一张底图，其余页仍用 p1 */
   .bg-hero{background-image:url('assets/p1-hero.jpg');
     filter:saturate(1.05) brightness(1.0) contrast(1.06);
@@ -505,7 +512,7 @@
 
 <div class="stage" id="stage">
   <!-- 固定底图：所有页面共用 p1，切换时不动 -->
-  <div class="bg"></div>
+  <div class="bg" id="baseBg"></div>
   <!-- 第一页专用底图 -->
   <div class="bg bg-hero" id="heroBg" aria-hidden="true"></div>
   <div class="wash"></div>
@@ -851,8 +858,11 @@
       idx=n;
       const hb=document.getElementById('heroBg');
       if(hb) hb.classList.toggle('off',to.id!=='p-hero');
-      dissolve(from);
-      setTimeout(()=>{
+      const bb=document.getElementById('baseBg');
+      if(bb) bb.classList.toggle('dim',to.id!=='p-hero');   // 非首页：底图压淡
+      const am=document.querySelector('.ambient');
+      if(am) am.classList.toggle('dim',to.id!=='p-hero');
+      dissolve(from);      setTimeout(()=>{
         from.classList.remove('active');
         to.classList.add('active');
         if(from.id==='p-choice') window.__allowNext=false;
