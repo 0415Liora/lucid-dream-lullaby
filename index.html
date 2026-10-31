@@ -315,13 +315,14 @@
     box-shadow:0 8px 20px rgba(70,100,40,.22)}
 
   /* 板评 · 卡牌前后重叠，左右滑动切换，两侧不透明度减弱 */
-  .deck{position:relative;width:100%;height:56cqh;margin:1cqh 0 1.4cqh;
+  .deck{position:relative;width:100%;height:48cqh;margin:3cqh 0 1.4cqh;
     -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.08) 0%,#000 18%,#000 82%,rgba(0,0,0,.08) 100%);
     mask-image:linear-gradient(90deg,rgba(0,0,0,.08) 0%,#000 18%,#000 82%,rgba(0,0,0,.08) 100%);
     touch-action:pan-y;cursor:grab}
   .deck.dragging{cursor:grabbing}
   .deck-track{position:absolute;inset:0;will-change:transform}
-  .dcard{position:absolute;top:50%;left:50%;width:45cqw;aspect-ratio:1/2.05;
+  /* 卡面按图片原比例 3:4 完整显示，不再裁成长条 */
+  .dcard{position:absolute;top:50%;left:50%;width:52cqw;aspect-ratio:3/4;
     border-radius:10px;overflow:hidden;background:#fff;
     border:2px solid rgba(255,255,255,.92);
     /* 阴影：大范围、低浓度的柔影，不做硬边 */
@@ -349,7 +350,8 @@
     background:linear-gradient(180deg,rgba(16,34,6,0) 40%,rgba(16,34,6,.06) 62%,
       rgba(14,30,6,.18) 82%,rgba(12,26,4,.44) 100%)}
   .dcard.on .dlink{opacity:1}
-  .dcard:not(.on) .dlink{opacity:.85}
+  /* 两侧的卡只露画面边缘，不再露出半截文字 */
+  .dcard:not(.on) .dlink{opacity:0}
 
   /* 页面内的小蝴蝶（抠图 p2） */
   .bfx{position:absolute;z-index:4;pointer-events:none;user-select:none;
@@ -644,8 +646,8 @@
 
               <div class="nstate peek" data-state="peek">
                 <div class="peek-wrap">
-                  <img class="peek-blur" src="assets/p1.jpg" alt="" aria-hidden="true">
-                  <img class="peek-sharp" src="assets/p1.jpg" alt="" aria-hidden="true">
+                  <img class="peek-blur" src="assets/peek-ootd.jpg" alt="" aria-hidden="true">
+                  <img class="peek-sharp" src="assets/peek-ootd.jpg" alt="" aria-hidden="true">
                 </div>
               </div>
 
@@ -673,7 +675,7 @@
                  target="_blank" rel="noopener noreferrer">引の板评</a>
             </div>
             <div class="dcard">
-              <img src="assets/card2.png" alt="引の话术">
+              <img src="assets/card2.jpg" alt="引の话术">
               <a class="dlink" data-keep href="https://www.kdocs.cn/l/chIgc5VBmsjR"
                  target="_blank" rel="noopener noreferrer">引の话术</a>
             </div>
@@ -1246,7 +1248,7 @@
     function layout(){
       cards.forEach((c,i)=>{
         const o=i-active, ao=Math.abs(o);
-        c.style.transform='translate(-50%,-50%) translateX('+(o*58)+'%) scale('+
+        c.style.transform='translate(-50%,-50%) translateX('+(o*55)+'%) scale('+
           Math.max(.6,1-ao*.10).toFixed(3)+') rotate('+(o*2.6).toFixed(2)+'deg)';
         c.style.zIndex=String(200-ao);
         c.style.opacity=ao===0?'1':String(Math.max(.28,.92-ao*.10));
