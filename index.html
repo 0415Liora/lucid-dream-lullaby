@@ -138,17 +138,40 @@
     box-shadow:0 16px 38px rgba(20,64,46,.10),inset 0 1px 0 rgba(255,255,255,.92)}
 
   /* ============ 第三页 · 档案（左上角起排） ============ */
-  #p-card{align-items:flex-start;justify-content:flex-start;padding-top:7.6cqh}
-  /* 左上角一层极淡的白绿柔光（只做轻微分离，不加深色） */
-  #p-card::before{content:"";position:absolute;left:-14%;top:1%;width:96%;height:42%;z-index:0;
-    background:radial-gradient(ellipse at 36% 50%,rgba(255,255,255,.52) 0%,rgba(255,255,255,.26) 46%,transparent 76%);
-    filter:blur(16px);pointer-events:none}
-  .profile{text-align:left;display:flex;flex-direction:column;align-items:flex-start;height:100%}
-  /* 风格块整体：在剩余空间内垂直居中 */
-  .pf-block{position:relative;width:100%;margin:auto 0;display:flex;flex-direction:column;align-items:center}
-  .pf-block::before{content:"";position:absolute;left:-6%;top:-14%;width:112%;height:128%;z-index:-1;
-    background:radial-gradient(closest-side,rgba(255,255,255,.66) 0%,rgba(255,255,255,.36) 58%,rgba(255,255,255,0) 100%);
-    filter:blur(18px)}
+  #p-card{align-items:flex-start;justify-content:flex-start;padding-top:6.4cqh}
+  .profile{position:relative;display:block;height:100%;text-align:center}
+
+  /* 入场：整页文字渐渐淡入（不再逐字打字）；随后左上收拢到右上、中间上移放大 */
+  .pf-head,.pf-mid,.pf-foot{opacity:0;transition:opacity 1.2s ease}
+  .profile.in .pf-head{opacity:1}
+  .profile.in .pf-mid{opacity:1;transition-delay:.24s}
+  .profile.in .pf-foot{opacity:1;transition-delay:1.9s}
+  #p-card.out .profile{opacity:0;transition:opacity .42s ease}
+  .profile.noanim .pf-head,.profile.noanim .pf-mid,.profile.noanim .pf-foot,
+  .profile.noanim .pf-head > *{transition:none}
+
+  /* —— 左上那一组：淡入后整体缩小、收拢到右上角 —— */
+  .pf-head{position:absolute;left:0;top:0;z-index:6;text-align:left;
+    display:flex;flex-direction:column;align-items:flex-start;
+    transform-origin:top left;transform:translate3d(0,0,0) scale(1);
+    transition:transform 1.7s cubic-bezier(.22,.74,.2,1),opacity 1.2s ease}
+  .pf-head > *{margin-left:0;transition:margin-left 1.7s cubic-bezier(.22,.74,.2,1)}
+  .profile.settled .pf-head{transform:translate3d(var(--hx,0px),var(--hy,0px),0) scale(var(--hs,1))}
+  /* 跟着头像走的柔光 */
+  .pf-head::before{content:"";position:absolute;left:-34%;top:-14%;width:168%;height:132%;z-index:-1;
+    background:radial-gradient(ellipse at 44% 46%,rgba(255,255,255,.56) 0%,rgba(255,255,255,.28) 48%,transparent 80%);
+    filter:blur(14px);pointer-events:none}
+
+  /* —— 中间那一组：整体上移并放大 —— */
+  .pf-mid{position:relative;z-index:5;margin-top:31cqh;
+    transform-origin:top center;transform:translateY(0) scale(1);
+    transition:transform 1.7s cubic-bezier(.22,.74,.2,1),opacity 1.2s ease}
+  .profile.settled .pf-mid{transform:translateY(var(--my,0px)) scale(var(--ms,1))}
+  .pf-mid::before{content:"";position:absolute;left:50%;top:-7%;width:128%;height:114%;z-index:-1;
+    transform:translateX(-50%);pointer-events:none;
+    background:radial-gradient(closest-side,rgba(255,255,255,.62) 0%,rgba(255,255,255,.30) 54%,rgba(255,255,255,0) 100%);
+    filter:blur(20px)}
+  .pf-foot{position:absolute;left:0;right:0;bottom:.6cqh;z-index:5}
 
   /* 圆形头像（p1）：avatar_p1.png 已烘焙柔边圆，外圈一道极细的圆框 */
   .pf-avatar{display:block;width:26.5cqw;max-width:144px;height:auto;border-radius:50%;
@@ -182,8 +205,8 @@
     -webkit-text-fill-color:transparent;color:transparent}
 
   /* 正中：p2（命运在新陈代谢 / mutation），垫一层柔白光晕，四周虚化融进纸面 */
-  .pf-mark{align-self:center;position:relative;width:41cqw;max-width:226px;
-    margin:.4cqh 0 .3cqh;display:flex;align-items:center;justify-content:center;
+  .pf-mark{position:relative;width:30cqw;max-width:172px;
+    margin:.2cqh auto .5cqh;display:flex;align-items:center;justify-content:center;
     pointer-events:none;animation:markIn 2.2s ease-out both}
   .pf-mark::before{content:"";position:absolute;inset:-16% -14%;border-radius:50%;
     background:radial-gradient(closest-side,rgba(255,255,255,.82) 0%,rgba(255,255,255,.52) 52%,rgba(255,255,255,0) 100%);
@@ -197,41 +220,40 @@
     font-size:clamp(15px,5.4cqw,40px);letter-spacing:.16em;text-indent:.16em;color:#3f5f18;
     text-shadow:0 2px 10px rgba(255,255,255,.9),0 0 20px rgba(255,255,255,.75)}
 
-  .style-rows{margin-top:1.2cqh;width:100%;display:flex;flex-direction:column;gap:.7cqh}
-  .srow{display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:1.1cqw}
-  .srow.sub-row{margin-top:.2cqh}
-  .srow.tag-row{line-height:1.1}
-  .srow .tag{flex:0 0 auto;font-size:clamp(11px,3.5cqw,26px);font-weight:600;letter-spacing:.04em;
-    line-height:1.6}
-  .srow .tag.main{color:#3f5f18;text-shadow:0 1px 2px rgba(255,255,255,.9),0 0 12px rgba(255,255,255,.8)}
-  /* 【副】单独一行，无框 */
-  .srow .tag.sub{color:var(--green);text-shadow:0 1px 2px rgba(255,255,255,.9)}
-  .words{display:flex;flex-wrap:wrap;gap:.9cqw;align-items:center;justify-content:center}
-  /* 词条：黑色细框 + 白底半透（不透明度降低） */
-  /* 「<梦的配方>」移到「«命运的安排」上方，中间的字整体再大一号 */
-  .pf-recipe{align-self:center;font-family:var(--serif);font-weight:600;
+  /* 「<梦的配方>」在「«命运的安排」上方 */
+  .pf-recipe{font-family:var(--serif);font-weight:600;
     font-size:clamp(13px,4.3cqw,32px);letter-spacing:.12em;text-indent:.12em;color:#33501a;
-    margin:.2cqh 0 .55em;line-height:1.5;
+    margin:.2cqh 0 .5cqh;line-height:1.5;
     text-shadow:0 2px 10px rgba(255,255,255,.9),0 0 18px rgba(255,255,255,.75)}
 
-  .words > span{position:relative;border:.5px solid rgba(0,0,0,.62);border-radius:5px;
-    padding:.32cqh 1.5cqw;font-size:clamp(10.5px,3.05cqw,23px);letter-spacing:.04em;line-height:1.7;
-    background:rgba(255,255,255,.56);white-space:nowrap;cursor:pointer;
-    box-shadow:0 2px 7px rgba(60,90,30,.06),inset 0 1px 0 rgba(255,255,255,.6);
-    transition:transform .4s cubic-bezier(.2,.7,.2,1),background .4s ease,
-      box-shadow .4s ease,border-color .4s ease,color .4s ease}
-  .words > span.w{color:#2b4710}
-  .words > span.g{color:#6d9142}
-  /* 点一下：整块（含中间的字）放大一点、不透明度拉高 */
-  .words > span.on{z-index:2;transform:scale(1.14);
-    background:rgba(255,255,255,.96);border-color:rgba(0,0,0,.74);
-    box-shadow:0 10px 22px rgba(60,90,30,.18),inset 0 1px 0 rgba(255,255,255,.95)}
-  .words > span.on.w{color:#1f3609}
-  .words > span.on.g{color:#4d7a22}
+  /* 风格词条：合成一组，去掉边框与【主】【副】，以莫比乌斯环在中间自动环绕 */
+  .mobius{position:relative;width:100%;height:32cqh;margin:1.6cqh auto 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.7) 4%,#000 11%,#000 89%,rgba(0,0,0,.7) 96%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.7) 4%,#000 11%,#000 89%,rgba(0,0,0,.7) 96%,transparent 100%)}
+  .mring{position:absolute;inset:0}
+  /* 极淡的环带（只在词条后面垫一层，让“环”成型） */
+  .mobius::after{content:"";position:absolute;left:50%;top:50%;z-index:1;pointer-events:none;
+    width:calc(var(--rx,120px)*2);height:calc(var(--ry,120px)*2);border-radius:50%;
+    transform:translate(-50%,-50%) rotate(-5deg);
+    border:1px solid rgba(74,104,38,.13);
+    box-shadow:inset 0 0 26px rgba(255,255,255,.55)}
+  /* 环底下一层柔白，压住背后的枝影，词条才读得清 */
+  .mobius::before{content:"";position:absolute;left:50%;top:50%;width:132%;height:150%;z-index:0;
+    transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+    background:radial-gradient(closest-side,rgba(255,255,255,.52) 0%,rgba(255,255,255,.40) 48%,rgba(255,255,255,.16) 76%,rgba(255,255,255,0) 95%);
+    -webkit-backdrop-filter:blur(2.4px);backdrop-filter:blur(2.4px)}
+  .mitem{position:absolute;left:50%;top:50%;white-space:nowrap;cursor:pointer;
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(11.5px,3.42cqw,25px);letter-spacing:.05em;line-height:1.3;color:#2b4710;
+    transform:translate(-50%,-50%);transform-origin:center center;
+    text-shadow:0 1px 2px rgba(255,255,255,.9),0 0 6px rgba(255,255,255,.55);
+    will-change:transform,opacity,filter;transition:color .4s ease}
+  .mitem.g{color:#6d9142}
+  .mitem.on{color:#1a2f06}
 
-  .pf-crew{align-self:center;margin-top:1.1cqh;font-size:clamp(10px,2.55cqw,20px);letter-spacing:.1em;
+  .pf-crew{margin-top:1.1cqh;font-size:clamp(10px,2.55cqw,20px);letter-spacing:.1em;
     color:#2f4c14;text-shadow:0 1px 3px rgba(255,255,255,.85)}
-  .pf-note{align-self:center;margin-top:.7cqh;font-size:clamp(9px,2.15cqw,16px);letter-spacing:.08em;
+  .pf-note{margin-top:.7cqh;font-size:clamp(9px,2.15cqw,16px);letter-spacing:.08em;
     color:#6f7a66;
     text-shadow:0 1px 2px rgba(255,255,255,.9),0 0 8px rgba(255,255,255,.8)}
 
@@ -374,7 +396,11 @@
   .choice-q{font-family:var(--serif);font-weight:600;
     font-size:clamp(15px,4.6cqw,36px);letter-spacing:.1em;text-indent:.1em;line-height:1.9;
     color:#2b4710;margin-bottom:6cqh;
-    text-shadow:0 2px 10px rgba(255,255,255,.92),0 0 22px rgba(255,255,255,.8)}
+    text-shadow:0 2px 10px rgba(255,255,255,.92),0 0 22px rgba(255,255,255,.8);
+    transition:opacity 3.2s cubic-bezier(.33,0,.67,1),filter 3.2s linear,
+      transform 3.4s cubic-bezier(.22,.72,.2,1)}
+  /* 选项消散时，题目也一起散开 */
+  .choice-q.dissolve{opacity:0;filter:blur(6px);transform:translateY(-1.4cqh)}
   .choice-row{display:flex;justify-content:center;align-items:center;gap:8cqw;position:relative}
   .copt{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
     width:22cqw;height:7.2cqh;border-radius:999px;cursor:pointer;
@@ -553,54 +579,33 @@
     </section>
 
     <!-- 3 引の卡 · 档案 -->
-    <section class="page" id="p-card" data-label="引の卡">
+    <section class="page" id="p-card" data-label="引の卡" data-keep>
       <img class="bfx bfx-b" src="assets/butterfly.png" alt="" aria-hidden="true">
       <div class="layer profile">
-        <img class="pf-avatar" src="assets/avatar_p1.png" alt="" aria-hidden="true">
-        <div class="pf-cap top">« 漩涡的波痕</div>
-        <div class="pf-name">陳引</div>
-        <div class="pf-meta">
-          <span class="w">女</span><span class="bar">|</span
-          ><span class="g">Le-H</span><span class="bar">|</span
-          ><span class="w">INTP</span>
-        </div>
-
-        <div class="pf-mark"><img src="assets/p2_ink.png" alt="" aria-hidden="true"></div>
-
-        <div class="pf-recipe">&lt;梦的配方&gt;</div>
-        <div class="pf-block">
-        <div class="pf-cap style">« 命运的安排</div>
-        <div class="pf-style">风格一览</div>
-
-        <div class="style-rows">
-          <div class="srow tag-row">
-            <span class="tag main">【主】</span>
-          </div>
-          <div class="srow">
-            <div class="words">
-              <span class="w">平权</span><span class="g">引导</span
-              ><span class="w">剖析</span><span class="g">白话</span>
-            </div>
-          </div>
-          <div class="srow">
-            <div class="words">
-              <span class="w">治愈虐</span><span class="g">伪救赎</span
-              ><span class="w">中高恋</span>
-            </div>
-          </div>
-          <div class="srow tag-row sub-row">
-            <span class="tag sub">【副】</span>
-          </div>
-          <div class="srow">
-            <div class="words">
-              <span class="w">微文</span><span class="g">微贬</span
-              ><span class="w">涉三</span><span class="g">低无</span>
-            </div>
+        <!-- 左上：淡入后整体缩小、收拢到右上角 -->
+        <div class="pf-head" id="pfHead">
+          <img class="pf-avatar" src="assets/avatar_p1.png" alt="" aria-hidden="true">
+          <div class="pf-cap top">« 漩涡的波痕</div>
+          <div class="pf-name">陳引</div>
+          <div class="pf-meta">
+            <span class="w">女</span><span class="bar">|</span
+            ><span class="g">Le-H</span><span class="bar">|</span
+            ><span class="w">INTP</span>
           </div>
         </div>
 
-        <div class="pf-crew">常驻团-瀛洲号</div>
-        <div class="pf-note">近期复健-慎选</div>
+        <!-- 中间：整体上移放大；风格词条以莫比乌斯环自动环绕 -->
+        <div class="pf-mid" id="pfMid">
+          <div class="pf-mark"><img src="assets/p2_ink.png" alt="" aria-hidden="true"></div>
+          <div class="pf-recipe">&lt;梦的配方&gt;</div>
+          <div class="pf-cap style">« 命运的安排</div>
+          <div class="pf-style">风格一览</div>
+          <div class="mobius" id="mobius"><div class="mring" id="mRing"></div></div>
+        </div>
+
+        <div class="pf-foot">
+          <div class="pf-crew">常驻团-瀛洲号</div>
+          <div class="pf-note">近期复健-慎选</div>
         </div>
       </div>
     </section>
@@ -822,6 +827,7 @@
 
     // —— 消散：从左到右逐个淡出 ——
     function dissolve(p){
+      if(p.id==='p-card'){ p.classList.add('out'); return; }   // 第三页整组淡出
       const chs=[...p.querySelectorAll('.ch')];
       if(!chs.length||reduce) return;
       const step=340/chs.length;
@@ -871,6 +877,7 @@
         if(to.id==='p-hero'&&window.__resetHero) window.__resetHero();
         if(to.id==='p-about'&&window.__resetAbout) window.__resetAbout();
         if(to.id==='p-choice'&&window.__resetChoice) window.__resetChoice();
+        if(to.id==='p-card'&&window.__resetCard) window.__resetCard();
         typePage(to);
         if(window.__kickSwipe) window.__kickSwipe();
         updateNav();
@@ -1127,16 +1134,129 @@
 </script>
 
 <script>
-  // ============ 第三页：框起来的词条可点击（放大 + 不透明度拉高） ============
+  // ============ 第三页：淡入 → 左上收拢右上 / 中间上移放大 + 莫比乌斯环 ============
   (function(){
     const page=document.getElementById('p-card');
     if(!page) return;
-    page.addEventListener('click',e=>{
-      const t=e.target.closest('.words > span');
-      if(!t) return;
-      e.stopPropagation();               // 点词条不翻页
-      t.classList.toggle('on');
+    const prof=page.querySelector('.profile');
+    const head=document.getElementById('pfHead');
+    const mid=document.getElementById('pfMid');
+    const wrap=document.getElementById('mobius');
+    const ring=document.getElementById('mRing');
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* —— 风格词条：合成一组，去掉【主】【副】与边框 —— */
+    const WORDS=[['平权','w'],['引导','g'],['剖析','w'],['白话','g'],
+                 ['治愈虐','w'],['伪救赎','g'],['中高恋','w'],
+                 ['微文','w'],['微贬','g'],['涉三','w'],['低无','g']];
+    const items=WORDS.map(w=>{
+      const s=document.createElement('span');
+      s.className='mitem '+w[1];
+      s.textContent=w[0];
+      ring.appendChild(s);
+      return s;
     });
+    const N=items.length;
+
+    /* —— 莫比乌斯环几何 —— */
+    let Rx=120,Ry=80,kw=.13;
+    function measureRing(){
+      const w=wrap.clientWidth||1, h=wrap.clientHeight||1;
+      Rx=w*0.285; Ry=h*0.460;
+      wrap.style.setProperty('--rx',Rx.toFixed(1)+'px');
+      wrap.style.setProperty('--ry',Ry.toFixed(1)+'px');
+    }
+    // 莫比乌斯环：t 绕行一周，前半圈在带子的正面、后半圈翻到背面（缩放/虚化/倾角随之变化）
+    function pt(t){
+      const d=Math.sin(t);                     // +1 正面 → -1 背面
+      const r=1+kw*Math.sin(t/2);              // 半圈扭转带来的半径起伏
+      return {x:Rx*r*Math.cos(t), y:Ry*d, dep:(d+1)/2};
+    }
+
+    let phase=0, speed=0, base=Math.PI*2/30, paused=false, last=0;
+    function draw(){
+      for(let i=0;i<N;i++){
+        const el=items[i], t=phase+i*Math.PI*2/N;
+        const p=pt(t);
+        const rot=Math.sin(t/2)*14;                // 带子扭转 → 词条轻微翻覆
+        const side=Math.abs(Math.cos(t));          // 左右两端 → 不透明度减弱
+        const on=el.classList.contains('on');
+        let op=(1-side*0.55)*(0.75+0.25*p.dep);
+        let sc=0.97+0.09*p.dep, bl=0;
+        if(on){ op=1; sc*=1.26; bl=0; }
+        el.style.opacity=op.toFixed(3);
+        el.style.filter=bl>0.06?'blur('+bl.toFixed(2)+'px)':'none';
+        el.style.zIndex=String(200+Math.round(p.dep*100)+(on?400:0));
+        el.style.transform='translate(-50%,-50%) translate3d('+p.x.toFixed(1)+'px,'+
+          p.y.toFixed(1)+'px,0) rotate('+rot.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
+      }
+    }
+    function frame(ts){
+      requestAnimationFrame(frame);
+      if(!page.classList.contains('active')){ last=0; return; }
+      if(!last){ last=ts; return; }
+      const dt=Math.min(50,ts-last)/1000; last=ts;
+      speed+=((paused||reduce?0:base)-speed)*0.07;
+      phase+=speed*dt;
+      draw();
+    }
+
+    function anyOn(){ return items.some(o=>o.classList.contains('on')); }
+    wrap.addEventListener('pointerenter',()=>{ if(!anyOn()) paused=true; });
+    wrap.addEventListener('pointerleave',()=>{ if(!anyOn()) paused=false; });
+    page.addEventListener('click',e=>{
+      const t=e.target.closest('.mitem');
+      if(!t) return;
+      e.stopPropagation();                       // 点词条不翻页
+      const was=t.classList.contains('on');
+      items.forEach(o=>o.classList.remove('on'));
+      if(!was){ t.classList.add('on'); paused=true; } else paused=false;
+      draw();
+    });
+
+    /* —— 入场：淡入 → 左上收拢到右上、中间上移放大 —— */
+    function measureHead(){
+      const pw=prof.clientWidth, ph=prof.clientHeight;
+      const hw=head.offsetWidth||1, hs=0.55;
+      prof.style.setProperty('--hs',hs);
+      prof.style.setProperty('--hx',(pw-hw*hs).toFixed(1)+'px');
+      prof.style.setProperty('--hy',(-ph*0.016).toFixed(1)+'px');
+      const ms=1.10;
+      // 让中间这一组收拢后正好落到 80% 高度，底部不留大片空白
+      const my=Math.min(0, ph*0.80-(mid.offsetTop+mid.offsetHeight*ms));
+      prof.style.setProperty('--my',my.toFixed(1)+'px');
+      prof.style.setProperty('--ms',ms);
+      [...head.children].forEach(c=>{ c.dataset.dx=String(Math.max(0,hw-c.offsetWidth)); });
+    }
+    function settle(){
+      measureHead();
+      prof.classList.add('settled');
+      [...head.children].forEach(c=>{ c.style.marginLeft=(c.dataset.dx||0)+'px'; });
+    }
+    function reset(){
+      page.classList.remove('out');
+      prof.classList.add('noanim');
+      prof.classList.remove('in','settled');
+      [...head.children].forEach(c=>{ c.style.marginLeft='0px'; });
+      void prof.offsetWidth;                     // 让“归位”立即生效，不做补间
+      prof.classList.remove('noanim');
+      items.forEach(o=>o.classList.remove('on'));
+      paused=false; speed=0; phase=0;
+      measureRing(); draw();
+    }
+    window.__resetCard=function(){
+      reset();
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        prof.classList.add('in');
+        setTimeout(settle, reduce?0:820);
+      }));
+    };
+    window.addEventListener('resize',()=>{
+      if(!page.classList.contains('active')) return;
+      measureHead(); measureRing(); draw();
+    },{passive:true});
+    measureRing(); draw(); requestAnimationFrame(frame);
+    if(page.classList.contains('active')) window.__resetCard();
   })();
 </script>
 
@@ -1148,12 +1268,14 @@
     const veil=document.getElementById('fogVeil');
     if(!page||!row) return;
     const opts=[...row.querySelectorAll('.copt')];
+    const q=page.querySelector('.choice-q');
     const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     let locked=false;
 
     function reset(){
       locked=false;
       opts.forEach(o=>{ o.classList.remove('picked','gone','melt'); o.style.transform=''; o.style.opacity=''; });
+      if(q) q.classList.remove('dissolve');
       if(veil){ veil.style.transition=''; veil.style.opacity='0'; }
     }
     window.__resetChoice=reset;
@@ -1176,6 +1298,9 @@
           o.style.transform='scale(.40)';
           o.classList.add('gone');
         });
+
+        // 题目跟着一起消散
+        if(q) q.classList.add('dissolve');
 
         // 3.4s 的移动消散过程 → 雾慢慢弥漫 → 雾里浮出尾页
         const wait=reduce?400:3200;
